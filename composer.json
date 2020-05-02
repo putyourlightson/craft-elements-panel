@@ -1,0 +1,29 @@
+{
+    "name": "putyourlightson/craft-elements-panel",
+    "description": "Adds an elements panel to the debug toolbar.",
+    "version": "1.0.0",
+    "type": "craft-plugin",
+    "license": "mit",
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "putyourlightson\\elementspanel\\": "src/"
+        }
+    },
+    "support": {
+        "docs": "https://putyourlightson.com/plugins/elements-panel",
+        "source": "https://github.com/putyourlightson/craft-elements-panel",
+        "issues": "https://github.com/putyourlightson/craft-elements-panel/issues"
+    },
+    "extra": {
+        "name": "Elements Panel",
+        "handle": "elements-panel",
+        "developer": "PutYourLightsOn",
+        "developerUrl": "https://putyourlightson.com/",
+        "documentationUrl": "https://github.com/putyourlightson/craft-elements-panel",
+        "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/v1/CHANGELOG.md",
+        "class": "putyourlightson\\elementspanel\\ElementsPanel"
+    }
+}
