@@ -32,13 +32,15 @@ class ElementsPanel extends Plugin
             Application::class,
             Application::EVENT_BEFORE_REQUEST,
             function() {
-                /** @var Module */
+                /** @var Module|null $debugModule */
                 $debugModule = Craft::$app->getModule('debug');
 
-                $debugModule->panels['elements'] = new ElementPanel([
-                    'id' => 'elements',
-                    'module' => $debugModule,
-                ]);
+                if ($debugModule) {
+                    $debugModule->panels['elements'] = new ElementPanel([
+                        'id' => 'elements',
+                        'module' => $debugModule,
+                    ]);
+                }
             }
         );
     }
