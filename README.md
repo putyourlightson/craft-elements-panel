@@ -1,6 +1,10 @@
+<p align="center"><img width="130" src="https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/v1/src/icon.svg"></p>
+
 # Elements Panel Plugin
 
 A plugin for Craft CMS 3 that adds an Elements panel to the debug toolbar.
+
+![Elements Panel Screenshot](./docs/elements-panel-1.png)
 
 ## Requirements
 
