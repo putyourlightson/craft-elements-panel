@@ -2,8 +2,8 @@
 /**
  * @var $panel \putyourlightson\elementspanel\debug\ElementPanel
  */
-$count = $panel->data['eagerLoadingOpportunity'] ? 1 : 0;
-$class = $panel->data['eagerLoadingOpportunity'] ? 'yii-debug-toolbar__label_warning' : '';
+$count = $panel->data['hasEagerLoadingOpportunity'] ? 1 : 0;
+$class = $panel->data['hasEagerLoadingOpportunity'] ? 'yii-debug-toolbar__label_warning' : '';
 ?>
 
 <div class="yii-debug-toolbar__block">

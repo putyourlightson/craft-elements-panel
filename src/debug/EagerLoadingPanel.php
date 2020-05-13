@@ -18,7 +18,7 @@ class EagerLoadingPanel extends Panel
     /**
      * @var bool
      */
-    private $_eagerLoadingOpportunity = false;
+    private $_hasEagerLoadingOpportunity = false;
 
     /**
      * @var string
@@ -37,14 +37,14 @@ class EagerLoadingPanel extends Panel
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
 
-                if ($this->_eagerLoadingOpportunity || empty($elementQuery->join)) {
+                if ($this->_hasEagerLoadingOpportunity || empty($elementQuery->join)) {
                     return;
                 }
 
                 $join = $elementQuery->join[0];
 
                 if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
-                    $this->_eagerLoadingOpportunity = true;
+                    $this->_hasEagerLoadingOpportunity = true;
                 }
             }
         );
@@ -80,7 +80,7 @@ class EagerLoadingPanel extends Panel
     public function save()
     {
         return [
-            'eagerLoadingOpportunity' => $this->_eagerLoadingOpportunity,
+            'hasEagerLoadingOpportunity' => $this->_hasEagerLoadingOpportunity,
         ];
     }
 }
