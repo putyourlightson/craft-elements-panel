@@ -6,10 +6,8 @@
 namespace putyourlightson\elementspanel\debug;
 
 use Craft;
-use craft\base\ElementInterface;
 use craft\elements\db\ElementQuery;
 use craft\events\CancelableEvent;
-use craft\events\PopulateElementEvent;
 use yii\base\Event;
 use yii\debug\Panel;
 
@@ -18,7 +16,12 @@ class EagerLoadingPanel extends Panel
     /**
      * @var bool
      */
-    private $_hasEagerLoadingOpportunity = false;
+    private $_opportunity = false;
+
+    /**
+     * @var array
+     */
+    private $_queries = [];
 
     /**
      * @var string
@@ -37,14 +40,23 @@ class EagerLoadingPanel extends Panel
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
 
-                if ($this->_hasEagerLoadingOpportunity || empty($elementQuery->join)) {
+                if (empty($elementQuery->join)) {
                     return;
                 }
 
                 $join = $elementQuery->join[0];
 
                 if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
-                    $this->_hasEagerLoadingOpportunity = true;
+                    $this->_opportunity = true;
+
+                    $query = [
+                        'sourceId' => $join[2][2]['relations.sourceId'] ?? null,
+                        'fieldId' => $join[2][2]['relations.fieldId'] ?? null,
+                    ];
+
+                    if (!in_array($query, $this->_queries)) {
+                        $this->_queries[] = $query;
+                    }
                 }
             }
         );
@@ -79,8 +91,20 @@ class EagerLoadingPanel extends Panel
      */
     public function save()
     {
+        $queries = [];
+        $elements = Craft::$app->getElements();
+        $fields = Craft::$app->getFields();
+
+        foreach ($this->_queries as $query) {
+            $queries[] = [
+                'source' => $elements->getElementById($query['sourceId']),
+                'field' => $fields->getFieldById($query['fieldId']),
+            ];
+        }
+
         return [
-            'hasEagerLoadingOpportunity' => $this->_hasEagerLoadingOpportunity,
+            'opportunity' => $this->_opportunity,
+            'queries' => $queries,
         ];
     }
 }
