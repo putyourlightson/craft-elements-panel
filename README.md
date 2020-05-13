@@ -2,7 +2,7 @@
 
 # Elements Panel Plugin
 
-A plugin for Craft CMS 3 that adds an Elements panel to the debug toolbar.
+A plugin for Craft CMS 3 that adds an Elements and an Eager-Loading panel to the debug toolbar.
 
 ![Elements Panel Screenshot](./docs/elements-panel-1.png)
 

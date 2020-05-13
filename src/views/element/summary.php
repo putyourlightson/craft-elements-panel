@@ -1,7 +1,9 @@
 <?php
-/** @var $panel \putyourlightson\elementspanel\debug\ElementPanel */
+/**
+ * @var $panel \putyourlightson\elementspanel\debug\ElementPanel
+ */
 $count = 0;
-foreach ($panel->data as $elements) {
+foreach ($panel->data['elements'] as $elements) {
     $count = $count + count($elements);
 }
 ?>

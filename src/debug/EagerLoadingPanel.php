@@ -13,7 +13,7 @@ use craft\events\PopulateElementEvent;
 use yii\base\Event;
 use yii\debug\Panel;
 
-class ElementPanel extends Panel
+class EagerLoadingPanel extends Panel
 {
     /**
      * @var bool
@@ -21,14 +21,9 @@ class ElementPanel extends Panel
     private $_eagerLoadingOpportunity = false;
 
     /**
-     * @var array
-     */
-    private $_elements = [];
-
-    /**
      * @var string
      */
-    private $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/element/';
+    private $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/eager-loading/';
 
     /**
      * @inheritdoc
@@ -42,13 +37,15 @@ class ElementPanel extends Panel
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
 
-                $this->_checkEagerLoadingOpportunity($elementQuery);
-            }
-        );
+                if ($this->_eagerLoadingOpportunity || empty($elementQuery->join)) {
+                    return;
+                }
 
-        Event::on(ElementQuery::class, ElementQuery::EVENT_AFTER_POPULATE_ELEMENT,
-            function(PopulateElementEvent $event) {
-                $this->_addElement($event->element);
+                $join = $elementQuery->join[0];
+
+                if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
+                    $this->_eagerLoadingOpportunity = true;
+                }
             }
         );
     }
@@ -58,7 +55,7 @@ class ElementPanel extends Panel
      */
     public function getName()
     {
-        return 'Elements';
+        return 'Eager-Loading';
     }
 
     /**
@@ -84,35 +81,6 @@ class ElementPanel extends Panel
     {
         return [
             'eagerLoadingOpportunity' => $this->_eagerLoadingOpportunity,
-            'elements' => $this->_elements,
         ];
-    }
-
-    private function _checkEagerLoadingOpportunity(ElementQuery $elementQuery)
-    {
-        if ($this->_eagerLoadingOpportunity || empty($elementQuery->join)) {
-            return;
-        }
-
-        $join = $elementQuery->join[0];
-
-        if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
-            $this->_eagerLoadingOpportunity = true;
-        }
-    }
-
-    private function _addElement(ElementInterface $element)
-    {
-        $elementType = get_class($element);
-
-        if (empty($this->_elements[$elementType])) {
-            $this->_elements[$elementType] = [];
-        }
-
-        if (empty($this->_elements[$elementType][$element->getId()])) {
-            $this->_elements[$elementType][$element->getId()] = 0;
-        }
-
-        $this->_elements[$elementType][$element->getId()]++;
     }
 }

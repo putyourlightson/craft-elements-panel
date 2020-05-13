@@ -4,8 +4,10 @@
 
 <h1>Elements</h1>
 
-<?php if (empty($panel->data)): ?>
-    <p><?= Craft::t('elements-panel', 'No elements were populated.') ?></p>
+<?php if (empty($panel->data['elements'])): ?>
+    <p>
+        <?= Craft::t('elements-panel', 'No elements were populated.') ?>
+    </p>
 
 <?php else: ?>
     <div class="table-responsive">
@@ -18,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($panel->data as $elementType => $elements): ?>
+                <?php foreach ($panel->data['elements'] as $elementType => $elements): ?>
                     <?php
                         $duplicates = 0;
                         foreach ($elements as $id => $count) {

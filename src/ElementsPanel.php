@@ -8,6 +8,7 @@ namespace putyourlightson\elementspanel;
 use Craft;
 use craft\base\Plugin;
 use craft\web\Application;
+use putyourlightson\elementspanel\debug\EagerLoadingPanel;
 use putyourlightson\elementspanel\debug\ElementPanel;
 use yii\base\Event;
 use yii\debug\Module;
@@ -38,6 +39,11 @@ class ElementsPanel extends Plugin
                 if ($debugModule) {
                     $debugModule->panels['elements'] = new ElementPanel([
                         'id' => 'elements',
+                        'module' => $debugModule,
+                    ]);
+
+                    $debugModule->panels['eager-loading'] = new EagerLoadingPanel([
+                        'id' => 'eager-loading',
                         'module' => $debugModule,
                     ]);
                 }
