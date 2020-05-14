@@ -20,19 +20,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($panel->data['elements'] as $elementType => $elements): ?>
-                    <?php
-                        $duplicates = 0;
-                        foreach ($elements as $id => $count) {
-                            if ($count > 1) {
-                                $duplicates++;
-                            }
-                        }
-                    ?>
+                <?php foreach ($panel->data['elements'] as $elements): ?>
                     <tr>
-                        <td><?= $elementType ?></td>
-                        <td><?= count($elements) ?></td>
-                        <td><?= $duplicates ?></td>
+                        <td><?= $elements['elementType'] ?></td>
+                        <td><?= $elements['count'] ?></td>
+                        <td><?= $elements['duplicates'] ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

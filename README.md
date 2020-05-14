@@ -4,7 +4,17 @@
 
 A plugin for Craft CMS 3 that adds an Elements and an Eager-Loading panel to the debug toolbar.
 
-![Elements Panel Screenshot](./docs/elements-panel-1.png)
+## Elements
+
+Displays how many elements were populated and how many are duplicates, grouped by element type.
+
+![Elements](./docs/elements-panel-elements.png)
+
+## Eager-Loading
+
+Warns you if opportunities for eager-loading elements are detected. Displays how many queries were executed (that could be eager-loaded) and how many are duplicates, grouped by field name.
+
+![Eager-Loading](./docs/elements-panel-eager-loading.png)
 
 ## Requirements
 
@@ -15,7 +25,7 @@ Craft CMS 3.0.0 or later.
 Install the plugin using composer.
 
 ```
-composer require putyourlightson/craft-elements-panel
+composer require putyourlightson/craft-elements-panel:^1.0.0-beta.1
 ```
 
 ## License

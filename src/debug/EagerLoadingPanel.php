@@ -6,6 +6,7 @@
 namespace putyourlightson\elementspanel\debug;
 
 use Craft;
+use craft\base\Field;
 use craft\elements\db\ElementQuery;
 use craft\events\CancelableEvent;
 use yii\base\Event;
@@ -13,11 +14,6 @@ use yii\debug\Panel;
 
 class EagerLoadingPanel extends Panel
 {
-    /**
-     * @var bool
-     */
-    private $_opportunity = false;
-
     /**
      * @var array
      */
@@ -40,24 +36,7 @@ class EagerLoadingPanel extends Panel
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
 
-                if (empty($elementQuery->join)) {
-                    return;
-                }
-
-                $join = $elementQuery->join[0];
-
-                if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
-                    $this->_opportunity = true;
-
-                    $query = [
-                        'sourceId' => $join[2][2]['relations.sourceId'] ?? null,
-                        'fieldId' => $join[2][2]['relations.fieldId'] ?? null,
-                    ];
-
-                    if (!in_array($query, $this->_queries)) {
-                        $this->_queries[] = $query;
-                    }
-                }
+                $this->_addQuery($elementQuery);
             }
         );
     }
@@ -91,20 +70,62 @@ class EagerLoadingPanel extends Panel
      */
     public function save()
     {
+        $total = 0;
         $queries = [];
-        $elements = Craft::$app->getElements();
         $fields = Craft::$app->getFields();
 
-        foreach ($this->_queries as $query) {
+        foreach ($this->_queries as $fieldId => $sourceIds) {
+            $duplicates = 0;
+
+            foreach ($sourceIds as $sourceId => $count) {
+                $total++;
+
+                if ($count > 1) {
+                    $duplicates++;
+                }
+            }
+
+            /** @var Field $field */
+            $field = $fields->getFieldById($fieldId);
+
             $queries[] = [
-                'source' => $elements->getElementById($query['sourceId']),
-                'field' => $fields->getFieldById($query['fieldId']),
+                'fieldName' => $field->name,
+                'count' => count($sourceIds),
+                'duplicates' => $duplicates,
             ];
         }
 
         return [
-            'opportunity' => $this->_opportunity,
+            'total' => $total,
             'queries' => $queries,
         ];
+    }
+
+    private function _addQuery(ElementQuery $elementQuery)
+    {
+        if (empty($elementQuery->join)) {
+            return;
+        }
+
+        $join = $elementQuery->join[0];
+
+        if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
+            $fieldId = $join[2][2]['relations.fieldId'] ?? null;
+            $sourceId = $join[2][2]['relations.sourceId'] ?? null;
+
+            if ($fieldId === null) {
+                return;
+            }
+
+            if (empty($this->_queries[$fieldId])) {
+                $this->_queries[$fieldId] = [];
+            }
+
+            if (empty($this->_queries[$fieldId][$sourceId])) {
+                $this->_queries[$fieldId][$sourceId] = 0;
+            }
+
+            $this->_queries[$fieldId][$sourceId]++;
+        }
     }
 }

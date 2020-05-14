@@ -16,11 +16,6 @@ use yii\debug\Panel;
 class ElementPanel extends Panel
 {
     /**
-     * @var bool
-     */
-    private $_eagerLoadingOpportunity = false;
-
-    /**
      * @var array
      */
     private $_elements = [];
@@ -36,15 +31,6 @@ class ElementPanel extends Panel
     public function init()
     {
         parent::init();
-
-        Event::on(ElementQuery::class, ElementQuery::EVENT_BEFORE_PREPARE,
-            function(CancelableEvent $event) {
-                /** @var ElementQuery $elementQuery */
-                $elementQuery = $event->sender;
-
-                $this->_checkEagerLoadingOpportunity($elementQuery);
-            }
-        );
 
         Event::on(ElementQuery::class, ElementQuery::EVENT_AFTER_POPULATE_ELEMENT,
             function(PopulateElementEvent $event) {
@@ -82,23 +68,31 @@ class ElementPanel extends Panel
      */
     public function save()
     {
+        $total = 0;
+        $elements = [];
+
+        foreach ($this->_elements as $elementType => $elementIds) {
+            $duplicates = 0;
+
+            foreach ($elementIds as $elementId => $count) {
+                $total++;
+
+                if ($count > 1) {
+                    $duplicates++;
+                }
+            }
+
+            $elements[] = [
+                'elementType' => $elementType,
+                'count' => count($elementIds),
+                'duplicates' => $duplicates,
+            ];
+        }
+
         return [
-            'eagerLoadingOpportunity' => $this->_eagerLoadingOpportunity,
-            'elements' => $this->_elements,
+            'total' => $total,
+            'elements' => $elements,
         ];
-    }
-
-    private function _checkEagerLoadingOpportunity(ElementQuery $elementQuery)
-    {
-        if ($this->_eagerLoadingOpportunity || empty($elementQuery->join)) {
-            return;
-        }
-
-        $join = $elementQuery->join[0];
-
-        if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
-            $this->_eagerLoadingOpportunity = true;
-        }
     }
 
     private function _addElement(ElementInterface $element)
