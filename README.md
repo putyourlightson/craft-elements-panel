@@ -4,6 +4,8 @@
 
 A plugin for Craft CMS 3 that adds an Elements and an Eager-Loading panel to the debug toolbar.
 
+> This plugin is currently in beta. Please contribute by reporting any bugs or issues.
+
 ## Elements
 
 Displays how many elements were populated and how many are duplicates, grouped by element type.
