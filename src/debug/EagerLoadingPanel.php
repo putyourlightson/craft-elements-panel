@@ -115,7 +115,7 @@ class EagerLoadingPanel extends Panel
         $join = $elementQuery->join[0];
 
         /**
-         * This check relies on the way that relations are loaded.
+         * This conditional relies on the way that relation fields are loaded.
          * @see \craft\fields\BaseRelationField::normalizeValue
          */
         if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
