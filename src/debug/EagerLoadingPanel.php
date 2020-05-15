@@ -115,13 +115,14 @@ class EagerLoadingPanel extends Panel
         $join = $elementQuery->join[0];
 
         /**
-         * This check is quite crude and needs more thorough testing and use-cases.
+         * This check relies on the way that relations are loaded.
+         * @see \craft\fields\BaseRelationField::normalizeValue
          */
         if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
             $fieldId = $join[2][2]['relations.fieldId'] ?? null;
             $sourceId = $join[2][2]['relations.sourceId'] ?? null;
 
-            if ($fieldId === null) {
+            if ($fieldId === null || $sourceId === null) {
                 return;
             }
 
