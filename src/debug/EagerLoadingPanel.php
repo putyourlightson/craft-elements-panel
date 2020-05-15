@@ -101,6 +101,11 @@ class EagerLoadingPanel extends Panel
         ];
     }
 
+    /**
+     * Adds queries that could be eager-loading.
+     *
+     * @param ElementQuery $elementQuery
+     */
     private function _addQuery(ElementQuery $elementQuery)
     {
         if (empty($elementQuery->join)) {
@@ -109,6 +114,9 @@ class EagerLoadingPanel extends Panel
 
         $join = $elementQuery->join[0];
 
+        /**
+         * This check is quite crude and needs more thorough testing and use-cases.
+         */
         if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
             $fieldId = $join[2][2]['relations.fieldId'] ?? null;
             $sourceId = $join[2][2]['relations.sourceId'] ?? null;

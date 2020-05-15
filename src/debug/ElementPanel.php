@@ -95,6 +95,11 @@ class ElementPanel extends Panel
         ];
     }
 
+    /**
+     * Adds populated element count.
+     *
+     * @param ElementInterface $element
+     */
     private function _addElement(ElementInterface $element)
     {
         $elementType = get_class($element);
