@@ -4,9 +4,7 @@
 
 A plugin for Craft CMS 3 that adds an Elements and an Eager-Loading panel to the debug toolbar.
 
-![Elements](https://res.cloudinary.com/putyourlightson/image/fetch/f_auto,w_1536/https://putyourlightson.com/assets/images/plugins/elements-panel-elements.png)
-
-![Eager-Loading](https://res.cloudinary.com/putyourlightson/image/fetch/f_auto,w_1536/https://putyourlightson.com/assets/images/plugins/elements-panel-eager-loading.png)
+![Elements panel](https://putyourlightson.com/assets/images/plugins/elements-panel.png)
 
 ## Documentation
 
