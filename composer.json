@@ -22,7 +22,7 @@
         "handle": "elements-panel",
         "developer": "PutYourLightsOn",
         "developerUrl": "https://putyourlightson.com/",
-        "documentationUrl": "https://github.com/putyourlightson/craft-elements-panel",
+        "documentationUrl": "https://putyourlightson.com/plugins/elements-panel",
         "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/v1/CHANGELOG.md",
         "class": "putyourlightson\\elementspanel\\ElementsPanel"
     }
