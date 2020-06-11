@@ -23,7 +23,7 @@ Craft CMS 3.0.0 or later.
 To install the plugin, search for “Elements Panel” in the Craft Plugin Store, or install manually using composer.
 
 ```
-composer require putyourlightson/craft-elements-panel:
+composer require putyourlightson/craft-elements-panel
 ```
 
 ---
