@@ -8,6 +8,7 @@ namespace putyourlightson\elementspanel\debug;
 use Craft;
 use craft\base\Field;
 use craft\elements\db\ElementQuery;
+use craft\elements\db\MatrixBlockQuery;
 use craft\events\CancelableEvent;
 use yii\base\Event;
 use yii\debug\Panel;
@@ -36,7 +37,12 @@ class EagerLoadingPanel extends Panel
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
 
-                $this->_addQuery($elementQuery);
+                if ($elementQuery instanceof MatrixBlockQuery) {
+                    $this->_checkMatrixRelations($elementQuery);
+                }
+                else {
+                    $this->_checkBaseRelations($elementQuery);
+                }
             }
         );
     }
@@ -102,23 +108,25 @@ class EagerLoadingPanel extends Panel
     }
 
     /**
-     * Adds queries that could be eager-loading.
+     * Checks base relations.
+     * @see \craft\fields\BaseRelationField::normalizeValue
      *
      * @param ElementQuery $elementQuery
      */
-    private function _addQuery(ElementQuery $elementQuery)
+    private function _checkBaseRelations(ElementQuery $elementQuery)
     {
-        if (empty($elementQuery->join)) {
+        $join = $elementQuery->join[0] ?? null;
+
+        if ($join === null) {
             return;
         }
 
-        $join = $elementQuery->join[0];
+        $relationTypes = [
+            ['relations' => '{{%relations}}'],
+            '{{%relations}} relations',
+        ];
 
-        /**
-         * This conditional relies on the way that relation fields are loaded.
-         * @see \craft\fields\BaseRelationField::normalizeValue
-         */
-        if ($join[0] == 'INNER JOIN' && $join[1] == ['relations' => '{{%relations}}']) {
+        if ($join[0] == 'INNER JOIN' && in_array($join[1], $relationTypes)) {
             $fieldId = $join[2][2]['relations.fieldId'] ?? null;
             $sourceId = $join[2][2]['relations.sourceId'] ?? null;
 
@@ -126,15 +134,44 @@ class EagerLoadingPanel extends Panel
                 return;
             }
 
-            if (empty($this->_queries[$fieldId])) {
-                $this->_queries[$fieldId] = [];
-            }
-
-            if (empty($this->_queries[$fieldId][$sourceId])) {
-                $this->_queries[$fieldId][$sourceId] = 0;
-            }
-
-            $this->_queries[$fieldId][$sourceId]++;
+            $this->_addQuery($fieldId, $sourceId);
         }
+    }
+
+    /**
+     * Checks matrix relations.
+     * @see \craft\elements\db\MatrixBlockQuery::beforePrepare
+     *
+     * @param MatrixBlockQuery $elementQuery
+     */
+    private function _checkMatrixRelations(MatrixBlockQuery $elementQuery)
+    {
+        if (empty($elementQuery->fieldId) || empty($elementQuery->ownerId)) {
+            return;
+        }
+
+        $fieldId = is_array($elementQuery->fieldId) ? $elementQuery->fieldId[0] : $elementQuery->fieldId;
+        $ownerId = is_array($elementQuery->ownerId) ? $elementQuery->ownerId[0] : $elementQuery->ownerId;
+
+        $this->_addQuery($fieldId, $ownerId);
+    }
+
+    /**
+     * Adds a query that could be eager-loaded.
+     *
+     * @param int $fieldId
+     * @param int $sourceId
+     */
+    private function _addQuery(int $fieldId, int $sourceId)
+    {
+        if (empty($this->_queries[$fieldId])) {
+            $this->_queries[$fieldId] = [];
+        }
+
+        if (empty($this->_queries[$fieldId][$sourceId])) {
+            $this->_queries[$fieldId][$sourceId] = 0;
+        }
+
+        $this->_queries[$fieldId][$sourceId]++;
     }
 }
