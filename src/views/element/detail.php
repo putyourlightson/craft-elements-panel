@@ -1,5 +1,7 @@
 <?php
-/** @var $panel \putyourlightson\elementspanel\debug\ElementPanel */
+/**
+ * @var $panel \putyourlightson\elementspanel\debug\ElementPanel
+ */
 ?>
 
 <h1>Elements</h1>

@@ -96,6 +96,7 @@ class EagerLoadingPanel extends Panel
 
             $queries[] = [
                 'fieldName' => $field->name,
+                'fieldHandle' => $field->handle,
                 'count' => count($sourceIds),
                 'duplicates' => $duplicates,
             ];
@@ -109,7 +110,7 @@ class EagerLoadingPanel extends Panel
 
     /**
      * Checks base relations.
-     * @see \craft\fields\BaseRelationField::normalizeValue
+     * @see BaseRelationField::normalizeValue
      *
      * @param ElementQuery $elementQuery
      */
@@ -140,7 +141,7 @@ class EagerLoadingPanel extends Panel
 
     /**
      * Checks matrix relations.
-     * @see \craft\elements\db\MatrixBlockQuery::beforePrepare
+     * @see MatrixBlockQuery::beforePrepare
      *
      * @param MatrixBlockQuery $elementQuery
      */

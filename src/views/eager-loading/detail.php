@@ -1,5 +1,7 @@
 <?php
-/** @var $panel \putyourlightson\elementspanel\debug\EagerLoadingPanel */
+/**
+ * @var $panel \putyourlightson\elementspanel\debug\EagerLoadingPanel
+ */
 ?>
 
 <h1>Eager-Loading</h1>
@@ -19,24 +21,18 @@
             <thead>
                 <tr>
                     <th><?= Craft::t('elements-panel', 'Field Name') ?></th>
+                    <th><?= Craft::t('elements-panel', 'Field Handle') ?></th>
                     <th><?= Craft::t('elements-panel', 'Queries') ?></th>
                     <th><?= Craft::t('elements-panel', 'Duplicates') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($panel->data['queries'] as $fieldName => $queries): ?>
-                    <?php
-                        $duplicates = 0;
-                        foreach ($queries as $count) {
-                            if ($count > 1) {
-                                $duplicates++;
-                            }
-                        }
-                    ?>
+                <?php foreach ($panel->data['queries'] as $query): ?>
                     <tr>
-                        <td><?= $queries['fieldName'] ?></td>
-                        <td><?= $queries['count'] ?></td>
-                        <td><?= $queries['duplicates'] ?></td>
+                        <td><?= $query['fieldName'] ?></td>
+                        <td><?= $query['fieldHandle'] ?></td>
+                        <td><?= $query['count'] ?></td>
+                        <td><?= $query['duplicates'] ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

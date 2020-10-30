@@ -1,5 +1,9 @@
 # Release Notes for Elements Panel
 
+## 1.1.1 - 2020-10-30
+### Added
+- Added a field handle column to the eager-loading panel.
+
 ## 1.1.0 - 2020-06-29
 ### Added
 - Added support for eager-loading matrix fields.

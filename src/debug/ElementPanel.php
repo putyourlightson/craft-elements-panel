@@ -8,7 +8,6 @@ namespace putyourlightson\elementspanel\debug;
 use Craft;
 use craft\base\ElementInterface;
 use craft\elements\db\ElementQuery;
-use craft\events\CancelableEvent;
 use craft\events\PopulateElementEvent;
 use yii\base\Event;
 use yii\debug\Panel;
