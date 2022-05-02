@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $panel \putyourlightson\elementspanel\debug\EagerLoadingPanel
+ * @var \putyourlightson\elementspanel\debug\ElementPanel $panel
  */
 ?>
 
@@ -40,4 +40,3 @@
     </div>
 
 <?php endif; ?>
-

@@ -51,7 +51,7 @@ class ElementPanel extends Panel
      */
     public function getSummary(): string
     {
-        return Craft::$app->getView()->render($this->_viewPath.'summary', ['panel' => $this]);
+        return Craft::$app->getView()->render($this->_viewPath . 'summary', ['panel' => $this]);
     }
 
     /**
@@ -59,7 +59,7 @@ class ElementPanel extends Panel
      */
     public function getDetail(): string
     {
-        return Craft::$app->getView()->render($this->_viewPath.'detail', ['panel' => $this]);
+        return Craft::$app->getView()->render($this->_viewPath . 'detail', ['panel' => $this]);
     }
 
     /**

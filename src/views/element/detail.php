@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $panel \putyourlightson\elementspanel\debug\ElementPanel
+ * @var \putyourlightson\elementspanel\debug\ElementPanel $panel
  */
 ?>
 
