@@ -1,5 +1,8 @@
 # Release Notes for Elements Panel
 
+## 2.0.0-beta.1 - 2022-05-02
+- Added compatibility with Craft 4.
+
 ## 1.1.1 - 2020-10-30
 ### Added
 - Added a field handle column to the eager-loading panel.

@@ -18,17 +18,17 @@ class EagerLoadingPanel extends Panel
     /**
      * @var array
      */
-    private $_queries = [];
+    private array $_queries = [];
 
     /**
      * @var string
      */
-    private $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/eager-loading/';
+    private string $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/eager-loading/';
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -50,7 +50,7 @@ class EagerLoadingPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'Eager-Loading';
     }
@@ -58,7 +58,7 @@ class EagerLoadingPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function getSummary()
+    public function getSummary(): string
     {
         return Craft::$app->getView()->render($this->_viewPath.'summary', ['panel' => $this]);
     }
@@ -66,7 +66,7 @@ class EagerLoadingPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function getDetail()
+    public function getDetail(): string
     {
         return Craft::$app->getView()->render($this->_viewPath.'detail', ['panel' => $this]);
     }
@@ -74,7 +74,7 @@ class EagerLoadingPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function save()
+    public function save(): array
     {
         $total = 0;
         $queries = [];
@@ -110,9 +110,8 @@ class EagerLoadingPanel extends Panel
 
     /**
      * Checks base relations.
-     * @see BaseRelationField::normalizeValue
      *
-     * @param ElementQuery $elementQuery
+     * @see BaseRelationField::normalizeValue
      */
     private function _checkBaseRelations(ElementQuery $elementQuery)
     {
@@ -141,9 +140,8 @@ class EagerLoadingPanel extends Panel
 
     /**
      * Checks matrix relations.
-     * @see MatrixBlockQuery::beforePrepare
      *
-     * @param MatrixBlockQuery $elementQuery
+     * @see MatrixBlockQuery::beforePrepare
      */
     private function _checkMatrixRelations(MatrixBlockQuery $elementQuery)
     {
@@ -159,9 +157,6 @@ class EagerLoadingPanel extends Panel
 
     /**
      * Adds a query that could be eager-loaded.
-     *
-     * @param int $fieldId
-     * @param int $sourceId
      */
     private function _addQuery(int $fieldId, int $sourceId)
     {

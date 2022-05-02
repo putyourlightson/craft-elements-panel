@@ -17,17 +17,17 @@ class ElementPanel extends Panel
     /**
      * @var array
      */
-    private $_elements = [];
+    private array $_elements = [];
 
     /**
      * @var string
      */
-    private $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/element/';
+    private string $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/element/';
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -41,7 +41,7 @@ class ElementPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'Elements';
     }
@@ -49,7 +49,7 @@ class ElementPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function getSummary()
+    public function getSummary(): string
     {
         return Craft::$app->getView()->render($this->_viewPath.'summary', ['panel' => $this]);
     }
@@ -57,7 +57,7 @@ class ElementPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function getDetail()
+    public function getDetail(): string
     {
         return Craft::$app->getView()->render($this->_viewPath.'detail', ['panel' => $this]);
     }
@@ -65,7 +65,7 @@ class ElementPanel extends Panel
     /**
      * @inheritdoc
      */
-    public function save()
+    public function save(): array
     {
         $total = 0;
         $elements = [];
@@ -96,8 +96,6 @@ class ElementPanel extends Panel
 
     /**
      * Adds populated element count.
-     *
-     * @param ElementInterface $element
      */
     private function _addElement(ElementInterface $element)
     {

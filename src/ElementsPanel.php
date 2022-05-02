@@ -10,6 +10,7 @@ use craft\base\Plugin;
 use craft\web\Application;
 use putyourlightson\elementspanel\debug\EagerLoadingPanel;
 use putyourlightson\elementspanel\debug\ElementPanel;
+use yii\base\Application as BaseApplication;
 use yii\base\Event;
 use yii\debug\Module;
 
@@ -18,12 +19,12 @@ class ElementsPanel extends Plugin
     /**
      * @var ElementsPanel
      */
-    public static $plugin;
+    public static ElementsPanel $plugin;
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -31,7 +32,7 @@ class ElementsPanel extends Plugin
 
         Event::on(
             Application::class,
-            Application::EVENT_BEFORE_REQUEST,
+            BaseApplication::EVENT_BEFORE_REQUEST,
             function() {
                 /** @var Module|null $debugModule */
                 $debugModule = Craft::$app->getModule('debug');
