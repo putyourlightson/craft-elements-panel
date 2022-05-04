@@ -1,11 +1,12 @@
 {
     "name": "putyourlightson/craft-elements-panel",
     "description": "Adds an Elements and an Eager-Loading panel to the debug toolbar.",
-    "version": "2.0.0-beta.1",
+    "version": "2.0.0",
     "type": "craft-plugin",
     "license": "mit",
     "require": {
-        "craftcms/cms": "^4.0.0-RC2"
+        "php": "^8.0.2",
+        "craftcms/cms": "^4.0.0"
     },
     "autoload": {
         "psr-4": {

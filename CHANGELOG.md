@@ -1,6 +1,6 @@
 # Release Notes for Elements Panel
 
-## 2.0.0-beta.1 - 2022-05-02
+## 2.0.0 - 2022-05-04
 - Added compatibility with Craft 4.
 
 ## 1.1.1 - 2020-10-30
