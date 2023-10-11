@@ -23,7 +23,7 @@ class EagerLoadingPanel extends Panel
     /**
      * @var string
      */
-    private string $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/eager-loading/';
+    private string $_viewPath = '@putyourlightson/elementspanel/views/eager-loading/';
 
     /**
      * @inheritdoc
@@ -33,14 +33,13 @@ class EagerLoadingPanel extends Panel
         parent::init();
 
         Event::on(ElementQuery::class, ElementQuery::EVENT_BEFORE_PREPARE,
-            function(CancelableEvent $event) {
+            function (CancelableEvent $event) {
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
 
                 if ($elementQuery instanceof MatrixBlockQuery) {
                     $this->_checkMatrixRelations($elementQuery);
-                }
-                else {
+                } else {
                     $this->_checkBaseRelations($elementQuery);
                 }
             }
