@@ -27,7 +27,6 @@ class ElementsPanel extends Plugin
     public function init(): void
     {
         parent::init();
-
         self::$plugin = $this;
 
         Event::on(
