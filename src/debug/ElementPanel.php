@@ -17,12 +17,12 @@ class ElementPanel extends Panel
     /**
      * @var array
      */
-    private array $_elements = [];
+    private array $elements = [];
 
     /**
      * @var string
      */
-    private string $_viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/element/';
+    private string $viewPath = '@vendor/putyourlightson/craft-elements-panel/src/views/element/';
 
     /**
      * @inheritdoc
@@ -33,7 +33,7 @@ class ElementPanel extends Panel
 
         Event::on(ElementQuery::class, ElementQuery::EVENT_AFTER_POPULATE_ELEMENT,
             function(PopulateElementEvent $event) {
-                $this->_addElement($event->element);
+                $this->addElement($event->element);
             }
         );
     }
@@ -51,7 +51,7 @@ class ElementPanel extends Panel
      */
     public function getSummary(): string
     {
-        return Craft::$app->getView()->render($this->_viewPath . 'summary', ['panel' => $this]);
+        return Craft::$app->getView()->render($this->viewPath . 'summary', ['panel' => $this]);
     }
 
     /**
@@ -59,7 +59,7 @@ class ElementPanel extends Panel
      */
     public function getDetail(): string
     {
-        return Craft::$app->getView()->render($this->_viewPath . 'detail', ['panel' => $this]);
+        return Craft::$app->getView()->render($this->viewPath . 'detail', ['panel' => $this]);
     }
 
     /**
@@ -70,10 +70,10 @@ class ElementPanel extends Panel
         $total = 0;
         $elements = [];
 
-        foreach ($this->_elements as $elementType => $elementIds) {
+        foreach ($this->elements as $elementType => $elementIds) {
             $duplicates = 0;
 
-            foreach ($elementIds as $elementId => $count) {
+            foreach ($elementIds as $count) {
                 $total++;
 
                 if ($count > 1) {
@@ -97,18 +97,18 @@ class ElementPanel extends Panel
     /**
      * Adds populated element count.
      */
-    private function _addElement(ElementInterface $element)
+    private function addElement(ElementInterface $element): void
     {
         $elementType = get_class($element);
 
-        if (empty($this->_elements[$elementType])) {
-            $this->_elements[$elementType] = [];
+        if (empty($this->elements[$elementType])) {
+            $this->elements[$elementType] = [];
         }
 
-        if (empty($this->_elements[$elementType][$element->getId()])) {
-            $this->_elements[$elementType][$element->getId()] = 0;
+        if (empty($this->elements[$elementType][$element->getId()])) {
+            $this->elements[$elementType][$element->getId()] = 0;
         }
 
-        $this->_elements[$elementType][$element->getId()]++;
+        $this->elements[$elementType][$element->getId()]++;
     }
 }

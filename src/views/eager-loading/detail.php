@@ -2,18 +2,21 @@
 /**
  * @var \putyourlightson\elementspanel\debug\ElementPanel $panel
  */
+
 ?>
 
 <h1>Eager-Loading</h1>
 
-<?php if (empty($panel->data['queries'])): ?>
+<?php
+if (empty($panel->data['queries'])): ?>
     <p>
-        <?= Craft::t('elements-panel', 'No opportunities for eager-loading elements were detected.') ?>
+        <?= Craft::t('elements-panel', 'No opportunities for <a href="https://craftcms.com/docs/5.x/development/eager-loading.html" target="_blank">eager-loading elements</a> were detected.') ?>
     </p>
 
-<?php else: ?>
+<?php
+else: ?>
     <p>
-        <?= Craft::t('elements-panel', 'Opportunities for eager-loading elements were detected on this page.') ?>
+        <?= Craft::t('elements-panel', 'Opportunities for <a href="https://craftcms.com/docs/5.x/development/eager-loading.html" target="_blank">eager-loading elements</a> were detected on this page.') ?>
     </p>
 
     <div class="table-responsive">
@@ -27,16 +30,19 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($panel->data['queries'] as $query): ?>
+                <?php
+                foreach ($panel->data['queries'] as $query): ?>
                     <tr>
                         <td><?= $query['fieldName'] ?></td>
                         <td><?= $query['fieldHandle'] ?></td>
                         <td><?= $query['count'] ?></td>
                         <td><?= $query['duplicates'] ?></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php
+                endforeach; ?>
             </tbody>
         </table>
     </div>
 
-<?php endif; ?>
+<?php
+endif; ?>

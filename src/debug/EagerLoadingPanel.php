@@ -8,7 +8,6 @@ namespace putyourlightson\elementspanel\debug;
 use Craft;
 use craft\base\Field;
 use craft\elements\db\ElementQuery;
-use craft\elements\db\MatrixBlockQuery;
 use craft\events\CancelableEvent;
 use yii\base\Event;
 use yii\debug\Panel;
@@ -18,12 +17,12 @@ class EagerLoadingPanel extends Panel
     /**
      * @var array
      */
-    private array $_queries = [];
+    private array $queries = [];
 
     /**
      * @var string
      */
-    private string $_viewPath = '@putyourlightson/elementspanel/views/eager-loading/';
+    private string $viewPath = '@putyourlightson/elementspanel/views/eager-loading/';
 
     /**
      * @inheritdoc
@@ -33,15 +32,10 @@ class EagerLoadingPanel extends Panel
         parent::init();
 
         Event::on(ElementQuery::class, ElementQuery::EVENT_BEFORE_PREPARE,
-            function (CancelableEvent $event) {
+            function(CancelableEvent $event) {
                 /** @var ElementQuery $elementQuery */
                 $elementQuery = $event->sender;
-
-                if ($elementQuery instanceof MatrixBlockQuery) {
-                    $this->_checkMatrixRelations($elementQuery);
-                } else {
-                    $this->_checkBaseRelations($elementQuery);
-                }
+                $this->checkElementQuery($elementQuery);
             }
         );
     }
@@ -59,7 +53,7 @@ class EagerLoadingPanel extends Panel
      */
     public function getSummary(): string
     {
-        return Craft::$app->getView()->render($this->_viewPath . 'summary', ['panel' => $this]);
+        return Craft::$app->getView()->render($this->viewPath . 'summary', ['panel' => $this]);
     }
 
     /**
@@ -67,7 +61,7 @@ class EagerLoadingPanel extends Panel
      */
     public function getDetail(): string
     {
-        return Craft::$app->getView()->render($this->_viewPath . 'detail', ['panel' => $this]);
+        return Craft::$app->getView()->render($this->viewPath . 'detail', ['panel' => $this]);
     }
 
     /**
@@ -79,10 +73,10 @@ class EagerLoadingPanel extends Panel
         $queries = [];
         $fields = Craft::$app->getFields();
 
-        foreach ($this->_queries as $fieldId => $sourceIds) {
+        foreach ($this->queries as $fieldId => $sourceIds) {
             $duplicates = 0;
 
-            foreach ($sourceIds as $sourceId => $count) {
+            foreach ($sourceIds as $count) {
                 $total++;
 
                 if ($count > 1) {
@@ -108,65 +102,47 @@ class EagerLoadingPanel extends Panel
     }
 
     /**
-     * Checks base relations.
+     * Checks for opportunities to eager-load elements.
+     * Based on the `HintsService::checkElementQuery` method in Blitz, with permission.
      *
-     * @see BaseRelationField::normalizeValue
+     * @see \putyourlightson\blitz\services\HintsService::checkElementQuery
      */
-    private function _checkBaseRelations(ElementQuery $elementQuery)
+    private function checkElementQuery(ElementQuery $elementQuery): void
     {
-        $join = $elementQuery->join[0] ?? null;
-
-        if ($join === null) {
+        if ($elementQuery->wasEagerLoaded()
+            || $elementQuery->eagerLoadHandle === null
+            || $elementQuery->id !== null
+        ) {
             return;
         }
 
-        $relationTypes = [
-            ['relations' => '{{%relations}}'],
-            '{{%relations}} relations',
-        ];
-
-        if ($join[0] == 'INNER JOIN' && in_array($join[1], $relationTypes)) {
-            $fieldId = $join[2][2]['relations.fieldId'] ?? null;
-            $sourceId = $join[2][2]['relations.sourceId'] ?? null;
-
-            if ($fieldId === null || $sourceId === null) {
-                return;
-            }
-
-            $this->_addQuery($fieldId, $sourceId);
+        /** @see ElementQuery::wasEagerLoaded() */
+        $planHandle = $elementQuery->eagerLoadHandle;
+        if (str_contains($planHandle, ':')) {
+            $planHandle = explode(':', $planHandle, 2)[1];
         }
-    }
 
-    /**
-     * Checks matrix relations.
-     *
-     * @see MatrixBlockQuery::beforePrepare
-     */
-    private function _checkMatrixRelations(MatrixBlockQuery $elementQuery)
-    {
-        if (empty($elementQuery->fieldId) || empty($elementQuery->ownerId)) {
+        $field = Craft::$app->getFields()->getFieldByHandle($planHandle);
+        if ($field === null) {
             return;
         }
 
-        $fieldId = is_array($elementQuery->fieldId) ? $elementQuery->fieldId[0] : $elementQuery->fieldId;
-        $ownerId = is_array($elementQuery->ownerId) ? $elementQuery->ownerId[0] : $elementQuery->ownerId;
-
-        $this->_addQuery($fieldId, $ownerId);
+        $this->addQuery($field->id, $elementQuery->eagerLoadSourceElement->id);
     }
 
     /**
      * Adds a query that could be eager-loaded.
      */
-    private function _addQuery(int $fieldId, int $sourceId)
+    private function addQuery(int $fieldId, int $sourceId): void
     {
-        if (empty($this->_queries[$fieldId])) {
-            $this->_queries[$fieldId] = [];
+        if (empty($this->queries[$fieldId])) {
+            $this->queries[$fieldId] = [];
         }
 
-        if (empty($this->_queries[$fieldId][$sourceId])) {
-            $this->_queries[$fieldId][$sourceId] = 0;
+        if (empty($this->queries[$fieldId][$sourceId])) {
+            $this->queries[$fieldId][$sourceId] = 0;
         }
 
-        $this->_queries[$fieldId][$sourceId]++;
+        $this->queries[$fieldId][$sourceId]++;
     }
 }

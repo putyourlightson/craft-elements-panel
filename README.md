@@ -12,11 +12,11 @@ Learn more and read the documentation at [putyourlightson.com/plugins/elements-p
 
 ## License
 
-This plugin is licensed for free under the MIT License.
+This plugin requires a free commercial license available through the [Craft Plugin Store](https://plugins.craftcms.com/elements-panel).
 
 ## Requirements
 
-This plugin requires [Craft CMS](https://craftcms.com/) 3.0.0 or later, or 4.0.0 or later.
+This plugin requires [Craft CMS](https://craftcms.com/) 3.0.0 or later, or 4.0.0 or later, or 5.0.0 or later.
 
 ## Installation
 

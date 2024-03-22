@@ -1,30 +1,48 @@
 {
-    "name": "putyourlightson/craft-elements-panel",
-    "description": "Adds an Elements and an Eager-Loading panel to the debug toolbar.",
-    "version": "2.0.0",
-    "type": "craft-plugin",
-    "license": "mit",
-    "require": {
-        "php": "^8.0.2",
-        "craftcms/cms": "^4.0.0"
-    },
-    "autoload": {
-        "psr-4": {
-          "putyourlightson\\elementspanel\\": "src/"
-        }
-    },
-    "support": {
-        "docs": "https://putyourlightson.com/plugins/elements-panel",
-        "source": "https://github.com/putyourlightson/craft-elements-panel",
-        "issues": "https://github.com/putyourlightson/craft-elements-panel/issues"
-    },
-    "extra": {
-        "name": "Elements Panel",
-        "handle": "elements-panel",
-        "developer": "PutYourLightsOn",
-        "developerUrl": "https://putyourlightson.com/",
-        "documentationUrl": "https://putyourlightson.com/plugins/elements-panel",
-        "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/v2/CHANGELOG.md",
-        "class": "putyourlightson\\elementspanel\\ElementsPanel"
+  "name": "putyourlightson/craft-elements-panel",
+  "description": "Adds an Elements and an Eager-Loading panel to the debug toolbar.",
+  "version": "3.0.0-beta.1",
+  "type": "craft-plugin",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.2",
+    "craftcms/cms": "^5.0.0-beta.1"
+  },
+  "require-dev": {
+    "craftcms/ecs": "dev-main",
+    "craftcms/phpstan": "dev-main"
+  },
+  "autoload": {
+    "psr-4": {
+      "putyourlightson\\elementspanel\\": "src/"
     }
+  },
+  "scripts": {
+    "phpstan": "phpstan --ansi --memory-limit=1G",
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --fix --ansi"
+  },
+  "config": {
+    "allow-plugins": {
+      "craftcms/plugin-installer": true,
+      "pestphp/pest-plugin": true,
+      "yiisoft/yii2-composer": true
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "support": {
+    "docs": "https://putyourlightson.com/plugins/elements-panel",
+    "source": "https://github.com/putyourlightson/craft-elements-panel",
+    "issues": "https://github.com/putyourlightson/craft-elements-panel/issues"
+  },
+  "extra": {
+    "name": "Elements Panel",
+    "handle": "elements-panel",
+    "developer": "PutYourLightsOn",
+    "developerUrl": "https://putyourlightson.com/",
+    "documentationUrl": "https://putyourlightson.com/plugins/elements-panel",
+    "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/v3/CHANGELOG.md",
+    "class": "putyourlightson\\elementspanel\\ElementsPanel"
+  }
 }
