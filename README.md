@@ -8,7 +8,7 @@ A plugin for [Craft CMS](https://craftcms.com/) that adds an Elements and an Eag
 
 ## Documentation
 
-Learn more and read the documentation at [putyourlightson.com/plugins/elements-panel](https://putyourlightson.com/plugins/elements-panel) »
+Learn more and read the documentation at [putyourlightson.com/plugins/elements-panel »](https://putyourlightson.com/plugins/elements-panel)
 
 ## License
 
