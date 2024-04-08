@@ -1,4 +1,4 @@
-<p align="center"><img width="130" src="https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/v1/src/icon.svg"></p>
+<p align="center"><img width="130" src="https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/develop/src/icon.svg"></p>
 
 # Elements Panel Plugin
 

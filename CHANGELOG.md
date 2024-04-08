@@ -1,6 +1,6 @@
 # Release Notes for Elements Panel
 
-## 3.0.0-beta.1 - 2024-03-21
+## 3.0.0 - 2024-04-08
 
 ### Added
 
