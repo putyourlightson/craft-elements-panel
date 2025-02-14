@@ -1,4 +1,7 @@
-<p align="center"><img width="130" src="https://raw.githubusercontent.com/putyourlightson/craft-elements-panel/develop/src/icon.svg"></p>
+[![Stable Version](https://img.shields.io/packagist/v/putyourlightson/craft-elements-panel?label=stable)]((https://packagist.org/packages/putyourlightson/craft-elements-panel))
+[![Total Downloads](https://img.shields.io/packagist/dt/putyourlightson/craft-elements-panel)](https://packagist.org/packages/putyourlightson/craft-elements-panel)
+
+<p align="center"><img width="180" src="https://putyourlightson.com/assets/logos/elements-panel.svg"></p>
 
 # Elements Panel Plugin
 

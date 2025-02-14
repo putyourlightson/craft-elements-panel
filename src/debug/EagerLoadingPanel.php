@@ -9,6 +9,7 @@ use Craft;
 use craft\base\Field;
 use craft\elements\db\ElementQuery;
 use craft\events\CancelableEvent;
+use craft\fields\BaseRelationField;
 use yii\base\Event;
 use yii\debug\Panel;
 
@@ -103,16 +104,21 @@ class EagerLoadingPanel extends Panel
 
     /**
      * Checks for opportunities to eager-load elements.
-     * Based on the `HintsService::checkElementQuery` method in Blitz, with permission.
+     * Based on the `HintsService::checkElementQuery` method in Blitz. Used with permission.
      *
      * @see \putyourlightson\blitz\services\HintsService::checkElementQuery
      */
     private function checkElementQuery(ElementQuery $elementQuery): void
     {
-        if ($elementQuery->wasEagerLoaded()
-            || $elementQuery->eagerLoadHandle === null
-            || $elementQuery->id !== null
-        ) {
+        if ($elementQuery->getBehavior(BaseRelationField::class) === null) {
+            return;
+        }
+
+        if ($elementQuery->eagerly || $elementQuery->wasEagerLoaded()) {
+            return;
+        }
+
+        if ($elementQuery->eagerLoadSourceElement === null || $elementQuery->eagerLoadSourceElement->id === null) {
             return;
         }
 
